@@ -31,6 +31,11 @@ public class UserService {
 		public User insert(User obj) {
 			return repository.save(obj);
 		}
+		
+		public void delete(String id) {
+			FindById(id);
+			repository.deleteById(id);
+		}
 	
 	//para questões de manutenção esse método está sendo criado aqui em vez de ser criado na
 	//classe DTO
