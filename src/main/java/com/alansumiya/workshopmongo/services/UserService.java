@@ -28,15 +28,27 @@ public class UserService {
 	}
 	
 	//método que vai salvar um usuário novo no repositório
-		public User insert(User obj) {
-			return repository.save(obj);
-		}
+	public User insert(User obj) {
+		return repository.save(obj);
+	}
 		
-		public void delete(String id) {
-			FindById(id);
-			repository.deleteById(id);
-		}
+	public void delete(String id) {
+		FindById(id);
+		repository.deleteById(id);
+	}
+		
+	public User update(User obj) {
+		User newObj = FindById(obj.getId());
+		updateData(newObj, obj);
+		return repository.save(newObj);
+	}
 	
+	private void updateData(User newObj, User obj) {
+		newObj.setName(obj.getName());
+		newObj.setEmail(obj.getEmail());
+		
+	}
+
 	//para questões de manutenção esse método está sendo criado aqui em vez de ser criado na
 	//classe DTO
 	public User fromDTO(UserDTO objDto) {
