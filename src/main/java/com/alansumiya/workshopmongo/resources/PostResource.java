@@ -1,5 +1,6 @@
 package com.alansumiya.workshopmongo.resources;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,23 @@ public class PostResource {
 	public ResponseEntity<List<Post>> findByTitle(@RequestParam(value = "text", defaultValue = "") String text){
 		text = URL.decodeParam(text);
 		List<Post> list = service.findByTitle(text);
+		return ResponseEntity.ok().body(list);
+	}
+	
+	@GetMapping(value = "/fullsearch")
+	//@PathVariable vc passa uma variável de url com uma barra/, já para pesquisa vc passa como 
+	//parâmetro usando ?, nesse caso usa @requestParam e especificar o nome do parâmetro (text)
+	//se o parâmetro não for informado, coloco vazio nele
+	public ResponseEntity<List<Post>> fullSearch(
+			@RequestParam(value = "text", defaultValue = "") String text,
+			@RequestParam(value = "minDate", defaultValue = "") String minDate,
+			@RequestParam(value = "maxDate", defaultValue = "") String maxDate){
+		text = URL.decodeParam(text);
+		//se der errado na data minima ele joga a data inicial (1970)
+		Date min = URL.converDate(minDate, new Date(0L));
+		//se der errado ele gera com a data atual do sistema
+		Date max = URL.converDate(maxDate, new Date());
+		List<Post> list = service.fullSearch(text, min, max);
 		return ResponseEntity.ok().body(list);
 	}
 	
